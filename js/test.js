@@ -1,1 +1,1 @@
-print("hello")
+document.write('Hello world');
