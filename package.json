@@ -1,0 +1,26 @@
+{
+  "name": "sim-js-webapp",
+  "version": "1.0.0",
+  "description": "Web app for creating simulations",
+  "main": "index.js",
+  "dependencies": {
+    "@tensorflow/tfjs": "^3.6.0",
+    "babylonjs": "^4.2.0",
+    "d3": "^6.7.0",
+    "live-server": "^1.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nikila-B/SIM-JS-WebApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nikila-B/SIM-JS-WebApp/issues"
+  },
+  "homepage": "https://github.com/Nikila-B/SIM-JS-WebApp#readme"
+}
