@@ -20,18 +20,18 @@ const arr2 = obj.get_info();
 console.log(arr)
 console.log(arr2)
 document.getElementById("start").addEventListener("click", function(){return move_circles(circle,arr2)});*/
-x = tf.tensor([0.9546541, 2.545654, 2.332415, 1.598741, -4.54653]);
+/*x = tf.tensor([0.9546541, 2.545654, 2.332415, 1.598741, -4.54653]);
 y = tf.tensor([1.546541, 4.4264, 3.27453, 5.98741, -4.54653]);
 state = [0,1,0,2,1]
-p_inf_time=[-1,0,-1,0,0]
+p_inf_time=[-1,0,-1,0,0]*/
 //x_inf = tf.fill([5],tf.slice(x,2,1).dataSync());
 //y_inf = tf.fill([5],tf.slice(x,2,1).dataSync()); 
-r = 2
+/*r = 2
 R = tf.fill([5], r*r);
-var now=2
+var now=2*/
 // (x-x_inf)^2 + (y-y_inF)^2
 //begin
-var zeros = tf.zeros([5])
+/*var zeros = tf.zeros([5])
 var ones = tf.fill([5],1)
 var dummy = tf.fill([5],-100)
 var index = tf.range(0,5,1)
@@ -56,6 +56,21 @@ inf_cur = inf_cur.filter(item => item !== -100)
 for(x in inf_cur){
     state[x]=1 //probability
     p_inf_time[x]=now
-}
+}*/
 //end
 svg = create_svg(500,500);
+let obj = new Box("sim1",200,[300,300]);
+obj.add_people(100,0.9);
+const arr = obj.get_info();
+const ar1 = obj.get_box_info();
+//const ar2 = obj[ar,ar1]
+rect = init_rect(svg,[ar1]);
+circle = init_circles(svg,arr);
+obj.set_dest(50);
+document.getElementById("start").addEventListener("click",function(){
+    obj.move_to_dest(0.25);
+    obj.update_state(20,10,1,1);
+    console.log(obj.get_info())
+    move_circles(circle,obj.get_info());
+
+});
