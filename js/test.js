@@ -58,29 +58,41 @@ for(x in inf_cur){
     p_inf_time[x]=now
 }*/
 //end
-
 svg = create_svg(500,500);
-let obj = new Box("sim1",200,[300,300]);
-obj.add_people(100,0.9);
-const arr = obj.get_info();
+let obj = new Box("sim1",0,500);
+obj.add_people(100,0.1);
+obj.add_people(50,0.2)
+var info = obj.get_info();
 const ar1 = obj.get_box_info();
 //const ar2 = obj[ar,ar1]
 rect = init_rect(svg,[ar1]);
-circle = init_circles(svg,arr);
-obj.set_dest(50);
-
+circle = init_circles(svg,info);
+obj.set_dest(100);
+//console.log(tf.memory().numTensors)
 document.getElementById("start").addEventListener("click", function(){
+    info_inf = info.filter(item => item[2]==1)
+    infected_circles(svg,info_inf,25,500)
     obj.move_to_dest(0.25);
-    obj.update_state(20,10,1,1)
-    //console.log(obj.get_info())
-    move_circles(circle,obj.get_info());
-    console.log(tf.memory().numTensors)
+    obj.update_state(25,1,0.25,0.2)
+    info = obj.get_info()
+    move_circles(circle,info,500);
+
+    //console.log(obj.now)
+    //console.log(tf.memory().numTensors)
 });
+/* var dest = tf.tensor1d([1,2,3,4,5,6,7,8,9,10])
+var p = tf.scalar(3);
+var s = tf.scalar(4);
+// p+s - abs(s-mod(x-p,2*s))
+p.add(s).sub(s.sub(dest.sub(p).mod(s.mul(2))).abs()).print() */
+
 /* document.getElementById("start").addEventListener("click", async function anim (){
     for(let i =0;i<100;i++){
         await new Promise(r => setTimeout(r, 16));
         
     }
 }); */
-
-
+// var x = tf.tensor([1,2,3,4],[2,2])
+// var y = tf.tensor([2,1])
+// tf.squaredDifference(x,y).print()
+// console.log()

@@ -47,14 +47,38 @@ function init_rect(svg, data){
 
 		
 }
-function move_circles(circle,data){
+
+function infected_circles(svg,info_inf,rad,dur){
+	svg.append('g')
+        .selectAll("circle")
+		.data(info_inf)
+		.join("circle")
+		.attr("cx", function(d) {
+				return d[0]; // new data field
+		})
+		.attr("cy", function(d) {
+				return d[1]; // new data field
+		})
+		.attr("r", 0)
+		.attr("fill",'#ff0000')
+		.attr('stroke','#ff0000')
+        .style("stroke-width", 1)
+        .transition()
+         .duration(dur)
+		.attr("r", rad)
+		.attr("fill-opacity", 0.1)
+        .remove() 	
+}
+
+function move_circles(circle,data,delay){
 	circle.data(data)
 		.join("circle")
+		.transition()
+		.delay(delay)
 		.attr('fill',function(d) {
 			const colors = ['#00ff00','#ff0000','#0000ff'];
 			return colors[d[2]]; // new data field
 		})
-		.transition()
 		.attr("cx", function(d) {
 			return d[0];
 		})
