@@ -1,6 +1,6 @@
 class Box
 {
-    constructor(name,size,pos)
+    constructor(name,pos,size)
     {
         if (typeof(size) === typeof(1))
             size = [size,size];
@@ -77,7 +77,7 @@ class Box
             var sus = this.p_state.map((e,i)=>e===0)
             var sus_x =  tf.where(sus,this.p_x,dummy);
             var sus_y =  tf.where(sus,this.p_y,dummy);
-            var inf_cur = new Set()
+            var inf_cur = []
             for(let i =0; i<inf.length;i++)
             {   
                 var id = inf[i]
@@ -86,7 +86,7 @@ class Box
                 //calculating result this way is expensive
                 //operations are performed on dummy values
                 var result = tf.where(tf.greater(tf.sub(r*r,tf.add(tf.squaredDifference(sus_x,x_inf),tf.squaredDifference(sus_y,y_inf))),tf.zeros([this.num])),index,dummy)
-                result.arraySync().filter(item=>item != -100).forEach(item=>inf_cur.add(item))
+                inf_cur.push(...result.arraySync().filter(item=>item != -100))
                 if(this.now-this.p_inf_time[id] >= t)
                 {
                     this.p_state[id]=Math.random()<=p_t?2:1;
@@ -96,10 +96,13 @@ class Box
             
             return inf_cur
         })
-        for(let x of inf_cur)
+        for(let x in inf_cur)
         {
-            this.p_state[x]=Math.random()<=p_r?1:0 //probability
-            this.p_inf_time[x]=this.now
+            var id = inf_cur[x]
+            if (this.p_state[id]!=1){
+                this.p_state[id]=Math.random()<=p_r?1:0 //probability
+                this.p_inf_time[id]=this.now
+            }
         }
     }
 
