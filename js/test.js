@@ -58,6 +58,7 @@ for(x in inf_cur){
     p_inf_time[x]=now
 }*/
 //end
+
 svg = create_svg(500,500);
 let obj = new Box("sim1",200,[300,300]);
 obj.add_people(100,0.9);
@@ -67,10 +68,19 @@ const ar1 = obj.get_box_info();
 rect = init_rect(svg,[ar1]);
 circle = init_circles(svg,arr);
 obj.set_dest(50);
-document.getElementById("start").addEventListener("click",function(){
-    obj.move_to_dest(0.25);
-    obj.update_state(20,10,1,1);
-    console.log(obj.get_info())
-    move_circles(circle,obj.get_info());
 
+document.getElementById("start").addEventListener("click", function(){
+    obj.move_to_dest(0.25);
+    obj.update_state(20,10,1,1)
+    //console.log(obj.get_info())
+    move_circles(circle,obj.get_info());
+    console.log(tf.memory().numTensors)
 });
+/* document.getElementById("start").addEventListener("click", async function anim (){
+    for(let i =0;i<100;i++){
+        await new Promise(r => setTimeout(r, 16));
+        
+    }
+}); */
+
+
