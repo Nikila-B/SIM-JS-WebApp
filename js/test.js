@@ -58,41 +58,113 @@ for(x in inf_cur){
     p_inf_time[x]=now
 }*/
 //end
+
+
+// The code below works in a frame by frame fashion
+
 svg = create_svg(500,500);
 let obj = new Box("sim1",0,500);
-obj.add_people(100,0.1);
-obj.add_people(50,0.2)
+obj.add_people(20,0.4);
+//obj.add_people(50,0.2)
 var info = obj.get_info();
 const ar1 = obj.get_box_info();
 //const ar2 = obj[ar,ar1]
 rect = init_rect(svg,[ar1]);
 circle = init_circles(svg,info);
-obj.set_dest(100);
+obj.set_dest(500);
 //console.log(tf.memory().numTensors)
-document.getElementById("start").addEventListener("click", function(){
-    info_inf = info.filter(item => item[2]==1)
-    infected_circles(svg,info_inf,25,500)
-    obj.move_to_dest(0.25);
-    obj.update_state(25,1,0.25,0.2)
-    info = obj.get_info()
-    move_circles(circle,info,500);
+info_buffer =[]
+var n =500
+for(let i =0;i<n;i++){
+    info_buffer.push(obj.get_info());
+    obj.move_to_dest(0.01);
+    obj.update_state(25,25,0.5,0.2)
+}
 
-    //console.log(obj.now)
-    //console.log(tf.memory().numTensors)
+mod = (n,m)=>((n%m)+m)%m
+var button = document.getElementById("start")
+document.getElementById("start").innerHTML='Start'
+
+var animateTimer;
+var isAnimating = false
+var completed = false
+var i=0;
+button.addEventListener("click", function(){
+        if(completed==true){
+            move_circles(circle,info_buffer[0],0,0,0)
+                i=0
+                button.innerHTML="Start";
+                completed=false
+        }
+        else if (isAnimating) {
+            clearInterval(animateTimer)    
+            button.innerHTML="Resume";
+            isAnimating=false                                        
+        }
+        else {
+            isAnimating=true
+            button.innerHTML="Pause";
+            animateTimer = setInterval(function(){
+                if(i<n-1){
+                        i++;
+                        move_circles(circle,info_buffer[i],30,i,25);
+                }
+                else{
+                    clearInterval(animateTimer)
+                    button.innerHTML="Reset";
+                    isAnimating=false
+                    completed=true
+                }
+            },30)
+        }
 });
-/* var dest = tf.tensor1d([1,2,3,4,5,6,7,8,9,10])
-var p = tf.scalar(3);
-var s = tf.scalar(4);
-// p+s - abs(s-mod(x-p,2*s))
-p.add(s).sub(s.sub(dest.sub(p).mod(s.mul(2))).abs()).print() */
 
-/* document.getElementById("start").addEventListener("click", async function anim (){
-    for(let i =0;i<100;i++){
-        await new Promise(r => setTimeout(r, 16));
+
+
+/* var init = [[100,200,1],[500,350,0]]
+svg = create_svg(500,500)
+circle = svg.selectAll('circles')
+    .data(init)
+    .join("circle")
+    .attr("cx", function(d) {
+            return d[0]; // new data field
+    })
+    .attr("cy", function(d) {
+            return d[1]; // new data field
+    })
+    .attr("r", 3.5)
+    .attr('stroke', 'black')
+    .attr('fill',function(d) {
+        const colors = ['#00ff00','#ff0000','#0000ff'];
+        return colors[d[2]]; // new data field
+    });
+var dest=[[200,400,1],[100,50,0]]
+
+circle.data(dest)
+    .join('circle')
+    .transition()
+    .duration(100)
+    .attr("cx", function(d) {
+        return d[0]; // new data field
+    })
+    .attr("cy", function(d) {
+            return d[1]; // new data field
+    })
+    .on('end',function(d){
+        d3.select(this).attr('fill',function(d) {
+        const colors = ['#00ff00','#ff0000','#0000ff'];
+        return colors[d[2]];})
+        if(d[2]==1){
+            d3.select('svg').append('circle').attr('r',3.5)
+                                            .attr('cx',d[0])
+                                            .attr('cy',d[1])
+                                            .attr('fill','#ff0000')
+                                            .attr('fill-opacity',0.1)
+                                            .attr('stroke','black')
+                                            .transition()
+                                            .duration(1000)
+                                            .attr('r',10)
+                                            .remove()
+        }
         
-    }
-}); */
-// var x = tf.tensor([1,2,3,4],[2,2])
-// var y = tf.tensor([2,1])
-// tf.squaredDifference(x,y).print()
-// console.log()
+    }) */

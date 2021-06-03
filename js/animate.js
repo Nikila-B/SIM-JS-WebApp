@@ -62,29 +62,43 @@ function infected_circles(svg,info_inf,rad,dur){
 		.attr("r", 0)
 		.attr("fill",'#ff0000')
 		.attr('stroke','#ff0000')
+		.attr("fill-opacity", 0.2)
         .style("stroke-width", 1)
         .transition()
          .duration(dur)
 		.attr("r", rad)
-		.attr("fill-opacity", 0.1)
+		
         .remove() 	
 }
 
-function move_circles(circle,data,delay){
-	circle.data(data)
-		.join("circle")
-		.transition()
-		.delay(delay)
-		.attr('fill',function(d) {
-			const colors = ['#00ff00','#ff0000','#0000ff'];
-			return colors[d[2]]; // new data field
-		})
-		.attr("cx", function(d) {
-			return d[0];
-		})
-		.attr("cy", function(d) {
-			return d[1];
-		});
+function move_circles(circle,data,dur,frame,r){
+		circle.data(data)
+			.join("circle")
+			.transition()
+			.duration(0)
+			.attr("cx", function(d) {
+				return d[0];
+			})
+			.attr("cy", function(d) {
+				return d[1];
+			})
+			.on('end',function(d){d3.select(this).attr('fill',function(d) {
+				const colors = ['#00ff00','#ff0000','#0000ff'];
+				return colors[d[2]];})
+				 if(d[2]==1){
+					d3.select('svg').append('circle')
+									.attr('r',3.5+(frame)%(r-3.5))
+									.attr('cx',d[0])
+									.attr('cy',d[1])
+									.attr('fill','#ff0000')
+									.attr('fill-opacity',0.1)
+									.attr('stroke','black')
+									.transition()
+									.duration(dur)
+									.attr('r',3.5+(frame+1)%(r-3.5))
+									.remove()
+        		} 
+			})
 }
 
 function mousedown(event) {
