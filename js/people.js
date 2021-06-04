@@ -85,7 +85,7 @@ class Box
                 var y_inf = tf.slice(this.p_y,id,1)
                 //calculating result this way is expensive
                 //operations are performed on dummy values
-                var result = tf.where(tf.greater(tf.sub(r*r,tf.add(tf.squaredDifference(sus_x,x_inf),tf.squaredDifference(sus_y,y_inf))),tf.zeros([this.num])),index,dummy)
+                var result = tf.where(tf.greater(tf.sub(r*r,tf.add(tf.squaredDifference(sus_x,x_inf),tf.squaredDifference(sus_y,y_inf))),tf.scalar(0)),index,dummy)
                 inf_cur.push(...result.arraySync().filter(item=>item != -100))
                 if(this.now-this.p_inf_time[id] >= t)
                 {
@@ -139,5 +139,10 @@ class Box
         disp_x.dispose()
         disp_y.dispose()
         s.dispose()
+    }
+
+    update_dest(diff)
+    {
+        return tf.tidy(()=>tf.all((tf.abs(this.p_dest_x.sub(this.p_x)).less(diff)) && (tf.abs(this.p_dest_y.sub(this.p_y)).less(diff))).dataSync()[0]);
     }
 }
