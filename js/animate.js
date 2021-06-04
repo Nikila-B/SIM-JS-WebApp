@@ -102,28 +102,32 @@ function move_circles(circle,data,dur,frame,r){
 }
 
 function mousedown(event) {
-    var [x,y] = d3.pointer(event);
-	console.log(x,y)
-    rect = svg.append("rect")
-        .attr("x", x)
-        .attr("y", y)
-        .attr("height", 0)
-        .attr("width", 0)
-		.attr('stroke', 'black')
-		.attr('fill','#ffffff')
-		.attr('fill-opacity',0)
-
-    svg.on("mousemove", mousemove);
+	if(document.getElementById('rect-create').checked==true){
+		var [x,y] = d3.pointer(event);
+		console.log(x,y)
+		rect = svg.append("rect")
+			.attr("x", x)
+			.attr("y", y)
+			.attr("height", 0)
+			.attr("width", 0)
+			.attr('stroke', 'black')
+			.attr('fill','#ffffff')
+			.attr('fill-opacity',0)
+		svg.on("mousemove", mousemove);
+	}
 }
 
 
 function mousemove(event) {
+	if(document.getElementById('rect-create').checked==true){
     var m = d3.pointer(event);
-
     rect.attr("width", Math.max(0, m[0] - +rect.attr("x")))
         .attr("height", Math.max(0, m[1] - +rect.attr("y")));
+	}
 }
 
 function mouseup() {
-    svg.on("mousemove", null);
+	if(document.getElementById('rect-create').checked==true){
+    	svg.on("mousemove", null);
+	}
 }
