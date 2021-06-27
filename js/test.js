@@ -157,9 +157,14 @@ obj.set_dest(200);
 //console.log(tf.memory().numTensors)
 info_buffer=[]
 info_buffer.push(info)
-let n =300
+let n =0
 for(let i =1;i<n;i++){
     info_buffer.push(obj.get_info());
+    obj.count_state(obj.p_state);
+    /*console.log('inf'+obj.inf_c);
+    console.log('sus'+obj.sus_c);
+    console.log('rec'+obj.rec_c);*/
+    console.log(obj.trend)
     obj.move_to_dest(0.01);
     obj.update_state(25,20,0.5,0.5)
     //console.log(obj.update_dest(1))
@@ -220,4 +225,86 @@ create_btn.addEventListener('click',function(){
             el.className='switch disabled'
         })
     }
-})
+    updateData(svg1,data2,x,y,xAxis,yAxis,valueLine)
+});
+
+var data1 = 
+    {ser1: [0.3,2,3], ser2: [4,16,8]};
+    //{ser1: 2, ser2: 16},
+    //{ser1: 3, ser2: 8}
+ 
+ 
+ var data1 = [
+    {time: 1, inf: 7},
+    {time: 4, inf: 1},
+    {time: 6, inf: 8}
+ ];
+create_axis()
+x = get_x()
+y = get_y()
+xAxis = get_xaxis(x)
+yAxis = get_yaxis(y)
+valueLine = get_line(x,y)
+svg1 = create_trend_svg()
+add_data(svg1,data1,x,y,xAxis,yAxis,valueLine)
+var data2 = [
+    {time: 1, inf: 7},
+    {time: 4, inf: 1},
+    {time: 6, inf: 8},
+    {time: 10, inf:15}
+ ];
+
+/*
+// set the dimensions and margins of the graph
+var margin = {top: 20, right: 20, bottom: 50, left: 70},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+
+// set the ranges
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+// define the line
+var valueline = d3.line()
+    .x(function(d) { return x(d.time); })
+    .y(function(d) { return y(d.inf); });
+
+// append the svg obgect to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Get the data
+function plot(data) {
+
+
+  // Scale the range of the data
+  x.domain(d3.extent(data, function(d) { return d.time; }));
+  y.domain([0, d3.max(data, function(d) { return d.inf; })]);
+
+  // Add the valueline path.
+  svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", valueline)
+      .attr('fill','none')
+      .attr('stroke','black')
+
+  // Add the x Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // Add the y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+
+}
+plot(data2)
+*/
