@@ -9,17 +9,39 @@
 </head>
 <body>
   <div class="flex-container">
-    <div class="flex-child"><button type="button" id='start' class="button">Move</button></div>
     <div class="flex-child">
-    <label class="switch switch-flat">
-    	<input id='rect-create' class="switch-input" type="checkbox" />
-    	<span class="switch-label" data-on="Create" data-off="Create"></span> 
-  	  <span class="switch-handle"></span> 
-    </label>
-    </div>  
-  </div>
-
-  
+      <button type="button" id='start' class="button">Move</button>
+    </div>
+    <div class="flex-child">
+      <label class="switch" id ='create-btn'>
+        <input id='create' class="switch-input" type="checkbox" />
+        <span class="switch-label" data-on="Create" data-off="Create"></span> 
+        <span class="switch-handle"></span>  
+     </label>
+    </div>
+    <div class="flex-child">
+      <label class="switch" name='action_grp'>
+      <input id='add' class="switch-input" type="checkbox" name="action" onclick="selectOnlyThis(this)"/>
+      <span class="switch-label" data-on="add" data-off="add"></span>
+      <span class="switch-handle"></span>
+      </label>
+    </div>
+    <div class="flex-child">
+      <label class="switch" name='action_grp'>
+      <input id='move' class="switch-input" type="checkbox" name="action" onclick="selectOnlyThis(this)" />
+      <span class="switch-label" data-on="move" data-off="move"></span>
+      <span class="switch-handle"></span>
+      </label>
+    </div>
+    <div class="flex-child">
+      <label class="switch " name='action_grp'>
+      <input id='remove' class="switch-input" type="checkbox" name="action" onclick="selectOnlyThis(this)"/>
+      <span class="switch-label " data-on="remove" data-off="remove"></span>
+      <span class="switch-handle"></span>
+      </label>
+    </div>
+ </div>
+ 
 <script src='js/trends.js'></script>
 <script src='js/app.js'></script>
 <script src='js/test.js'></script> 
