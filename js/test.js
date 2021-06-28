@@ -109,14 +109,49 @@ circle.data(dest)
         
     }) */
 
-svg = create_svg(500,500);
+const create_btn = document.getElementById('create')    
+const start_btn = document.getElementById("start")
+const add_btn = document.getElementById("add_btn")
+const move_btn = document.getElementById("move_btn")
+const remove_btn = document.getElementById("remove_btn")
+const action_grp = document.getElementsByName("action");
+const action_grp_btns = document.getElementsByName("action_grp");
+        
+if(create_btn.checked==true){
+    start_btn.disabled=true
+    action_grp_btns.forEach((el)=>{
+        el.className='switch'
+    })
+}
+else{
+    start_btn.disabled=false
+    action_grp.forEach((el)=>{
+        el.checked=false
+    });
+    action_grp_btns.forEach((el)=>{
+        el.className='switch disabled'
+    })
+}
+start_btn.innerHTML='start'
+
+function selectOnlyThis(id){
+    action_grp.forEach((el)=>{
+        if(el!=id)
+            el.checked = false;
+    });
+}
+  
+  
+
+
+
+const svg = create_svg(500,500);
 let obj = new Box("sim1",0,500);
-obj.add_people(50,0.4);
-//obj.add_people(50,0.2)
+obj.add_people(10,0.4);
+obj.add_people(50,0.2)
 var info = obj.get_info();
 const ar1 = obj.get_box_info();
 //const ar2 = obj[ar,ar1]
-rect = init_rect(svg,[ar1]);
 circle = init_circles(svg,info);
 obj.set_dest(200);
 //console.log(tf.memory().numTensors)
@@ -135,44 +170,44 @@ for(let i =1;i<n;i++){
     info_buffer.push(obj.get_info());
     data2.push({time:2,inf:obj.count_state(obj.p_state,1)})
     obj.move_to_dest(0.01);
-    obj.update_state(25,25,0.5,0.2)
+    obj.update_state(25,20,0.5,0.5)
+    //console.log(obj.update_dest(1))
     if (obj.update_dest(1) == true)
     {
         obj.set_dest(200);
     }
 }
 
-var button = document.getElementById("start")
-document.getElementById("start").innerHTML='Start'
-var animateTimer;
-var isAnimating = false
-var completed = false
-var i=0;
-button.addEventListener("click", function(){
+let animateTimer;
+let isAnimating = false
+let completed = false
+let i=0;
+start_btn.addEventListener("click", function(){
         if(completed==true){
             i=0
-            button.innerHTML="Start";
+            start_btn.innerHTML="Start";
             completed=false
             move_circles(circle,info_buffer[0],0,0,0)
             
         }
         else if (isAnimating) {
             clearInterval(animateTimer)    
-            button.innerHTML="Resume";
+            start_btn.innerHTML="Resume";
             isAnimating=false                                        
         }
         else {
             isAnimating=true
-            button.innerHTML="Pause";
+            start_btn.innerHTML="Pause";
+            document.getElementById('create-btn').className='switch disabled'
             animateTimer = setInterval(function(){
                 if(i<n-1){
                         i++;
-                        console.log(i)
                         move_circles(circle,info_buffer[i],30,i,25);
                 }
                 else{
                     clearInterval(animateTimer)
-                    button.innerHTML="Reset";
+                    start_btn.innerHTML="Reset";
+                    document.getElementById('create-btn').className='switch'
                     isAnimating=false
                     completed=true
                 }
@@ -180,6 +215,24 @@ button.addEventListener("click", function(){
         }
         updateData(svg1,data2,x,y,xAxis,yAxis,valueLine)
     
+});
+create_btn.addEventListener('click',function(){
+    if(create_btn.checked==true){
+        start_btn.disabled=true
+        action_grp_btns.forEach((el)=>{
+            el.className='switch'
+        })
+    }
+    else{
+        start_btn.disabled=false
+        action_grp.forEach((el)=>{
+            el.checked=false
+        });
+        action_grp_btns.forEach((el)=>{
+            el.className='switch disabled'
+        })
+    }
+    updateData(svg1,data2,x,y,xAxis,yAxis,valueLine)
 });
 
 
