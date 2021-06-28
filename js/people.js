@@ -1,3 +1,5 @@
+
+
 class Box
 {
     constructor(name,pos,size)
@@ -21,7 +23,7 @@ class Box
         this.p_dest_x= tf.zeros([2]);
         this.p_dest_y = tf.zeros([0]);
         this.p_inf_time = []
-        this.trend = [];
+        this.trend = [0,0,0];
         this.time = []
         this.time_d = {}
     }
@@ -41,9 +43,15 @@ class Box
             var i_s = Math.random()<=inf?1:0
             this.p_state.push(i_s)
             if (i_s===1)
+            {    
                 this.p_inf_time.push(this.now)
+                this.trend[1]+=1;
+            }
             else
+            {
                 this.p_inf_time.push(-1)
+                this.trend[0]+=1;
+            }
         }
         this.num+=num;
     }
@@ -93,7 +101,15 @@ class Box
                 inf_cur.push(...result.arraySync().filter(item=>item != -100))
                 if(this.now-this.p_inf_time[id] >= t)
                 {
-                    this.p_state[id]=Math.random()<=p_t?2:1;
+                    let s = Math.random()<=p_t?2:1;
+                    this.p_state[id]=s;
+                    if(s==2)
+                    {
+                        this.trend[2]+=1;
+                        this.trend[1]-=1;
+                    }
+
+
                 }
                 
             }
@@ -104,8 +120,15 @@ class Box
         {
             var id = inf_cur[x]
             if (this.p_state[id]!=1){
-                this.p_state[id]=Math.random()<=p_r?1:0 //probability
-                this.p_inf_time[id]=this.now
+                let s = Math.random()<=p_r?1:0
+                this.p_state[id]= s //probability
+                
+                if(s==1)
+                {
+                    this.p_inf_time[id]=this.now
+                    this.trend[0]-=1;
+                    this.trend[1]+=1;
+                }
             }
         }
     }
@@ -180,14 +203,8 @@ class Box
         return counts;
     }*/
 
-    count_state(arr,x)
+    count_state(x)
     {
-        var count = 0;
-        for(var i = 0; i < arr.length; ++i)
-        {
-            if(arr[i] == x)
-            count++;
-        }
-        return count;
+        return this.trend[x];
     }
 }

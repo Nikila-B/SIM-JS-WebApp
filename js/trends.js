@@ -44,15 +44,15 @@ function create_trend_svg()
 }
 
 // Get the data
-function add_data(svg,data,x,y,xAxis,yAxis,valueline)
+function add_data(svg,data,x,y,xAxis,yAxis,valueline,num)
 {
 
     // Scale the range of the data
     //x.domain(d3.extent(data,function(d){return d.time}));
     //y.domain([0,d3.max(data,function(d){return d.inf})]);
-
-    x.domain([0,20]);
-    y.domain([0,50]);
+    x_lim = 50;
+    x.domain([0,x_lim]);
+    y.domain([0,num]);
 
 
     svg.append("path")
@@ -73,20 +73,24 @@ function add_data(svg,data,x,y,xAxis,yAxis,valueline)
 
 }
 
-function updateData(svg,data,x,y,xAxis,yAxis,valueline) {
+function updateData(svg,data,x,y,xAxis,yAxis,valueline,now) {
     // Scale the range of the data again
-    x.domain(d3.extent(data, function(d) { return d.time; }));
-    y.domain([0, d3.max(data, function(d) { return d.inf; })]);
+    if(now>=x_lim-5)
+    {   
+        x_lim+=25; 
+        x.domain([0,x_lim]);
+    }
+        
 
     // Select the section we want to apply our changes to
     var svg = d3.select("body").transition();
 
     // Make the changes
     svg.select(".line")   // change the line
-        .duration(750)
+        .duration(50)
         .attr("d", valueline(data));
     svg.select(".x.axis") // change the x axis
-        .duration(750)
+        .duration(50)
         .call(xAxis);
     svg.select(".y.axis") // change the y axis
         .duration(750)

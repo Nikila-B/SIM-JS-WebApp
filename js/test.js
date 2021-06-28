@@ -168,7 +168,7 @@ var data2 = [
 console.log(data2)
 for(let i =1;i<n;i++){
     info_buffer.push(obj.get_info());
-    data2.push({time:2,inf:obj.count_state(obj.p_state,1)})
+    data2.push({time:obj.now,inf:obj.count_state(1)})
     obj.move_to_dest(0.01);
     obj.update_state(25,20,0.5,0.5)
     //console.log(obj.update_dest(1))
@@ -203,6 +203,7 @@ start_btn.addEventListener("click", function(){
                 if(i<n-1){
                         i++;
                         move_circles(circle,info_buffer[i],30,i,25);
+                        updateData(svg1,data2.slice(0,i),x,y,xAxis,yAxis,valueLine,data2[i].time);
                 }
                 else{
                     clearInterval(animateTimer)
@@ -213,7 +214,7 @@ start_btn.addEventListener("click", function(){
                 }
             },30)
         }
-        updateData(svg1,data2,x,y,xAxis,yAxis,valueLine)
+        
     
 });
 create_btn.addEventListener('click',function(){
@@ -232,7 +233,6 @@ create_btn.addEventListener('click',function(){
             el.className='switch disabled'
         })
     }
-    updateData(svg1,data2,x,y,xAxis,yAxis,valueLine)
 });
 
 
@@ -243,7 +243,7 @@ xAxis = get_xaxis(x)
 yAxis = get_yaxis(y)
 valueLine = get_line(x,y)
 svg1 = create_trend_svg()
-add_data(svg1,data1,x,y,xAxis,yAxis,valueLine)
+add_data(svg1,data1,x,y,xAxis,yAxis,valueLine,obj.num)
 
 
 /*
