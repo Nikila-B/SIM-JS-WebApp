@@ -150,7 +150,7 @@ class Box
         return tf.tidy(()=>tf.all((tf.abs(this.p_dest_x.sub(this.p_x)).less(diff)) && (tf.abs(this.p_dest_y.sub(this.p_y)).less(diff))).dataSync()[0]);
     }
 
-    count_state(arr)
+    /*count_state(arr)
     {
         const counts = {};
         for (var i = 0; i < arr.length; i++) 
@@ -178,5 +178,16 @@ class Box
         //this.trend.x = this.time;
         this.trend.push(this.time_d)
         return counts;
+    }*/
+
+    count_state(arr,x)
+    {
+        var count = 0;
+        for(var i = 0; i < arr.length; ++i)
+        {
+            if(arr[i] == x)
+            count++;
+        }
+        return count;
     }
 }

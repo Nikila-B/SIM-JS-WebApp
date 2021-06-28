@@ -48,8 +48,11 @@ function add_data(svg,data,x,y,xAxis,yAxis,valueline)
 {
 
     // Scale the range of the data
-    x.domain(d3.extent(data,function(d){return d.time}));
-    y.domain([0,d3.max(data,function(d){return d.inf})]);
+    //x.domain(d3.extent(data,function(d){return d.time}));
+    //y.domain([0,d3.max(data,function(d){return d.inf})]);
+
+    x.domain([0,20]);
+    y.domain([0,50]);
 
 
     svg.append("path")

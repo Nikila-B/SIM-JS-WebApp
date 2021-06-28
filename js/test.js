@@ -122,14 +122,18 @@ obj.set_dest(200);
 //console.log(tf.memory().numTensors)
 info_buffer=[]
 info_buffer.push(info)
-var n = 0
+var n = 500
+var data2 = [
+    {time: 0, inf: 0},
+ ];
+ var data1 = [
+    {time: 0, inf: 0},
+ ];
+
+console.log(data2)
 for(let i =1;i<n;i++){
     info_buffer.push(obj.get_info());
-    obj.count_state(obj.p_state);
-    /*console.log('inf'+obj.inf_c);
-    console.log('sus'+obj.sus_c);
-    console.log('rec'+obj.rec_c);*/
-    console.log(obj.trend)
+    data2.push({time:2,inf:obj.count_state(obj.p_state,1)})
     obj.move_to_dest(0.01);
     obj.update_state(25,25,0.5,0.2)
     if (obj.update_dest(1) == true)
@@ -137,6 +141,7 @@ for(let i =1;i<n;i++){
         obj.set_dest(200);
     }
 }
+
 var button = document.getElementById("start")
 document.getElementById("start").innerHTML='Start'
 var animateTimer;
@@ -149,6 +154,7 @@ button.addEventListener("click", function(){
             button.innerHTML="Start";
             completed=false
             move_circles(circle,info_buffer[0],0,0,0)
+            
         }
         else if (isAnimating) {
             clearInterval(animateTimer)    
@@ -172,20 +178,11 @@ button.addEventListener("click", function(){
                 }
             },30)
         }
-    updateData(svg1,data2,x,y,xAxis,yAxis,valueLine)
+        updateData(svg1,data2,x,y,xAxis,yAxis,valueLine)
+    
 });
 
-var data1 = 
-    {ser1: [0.3,2,3], ser2: [4,16,8]};
-    //{ser1: 2, ser2: 16},
-    //{ser1: 3, ser2: 8}
- 
- 
- var data1 = [
-    {time: 1, inf: 7},
-    {time: 4, inf: 1},
-    {time: 6, inf: 8}
- ];
+
 create_axis()
 x = get_x()
 y = get_y()
@@ -194,12 +191,7 @@ yAxis = get_yaxis(y)
 valueLine = get_line(x,y)
 svg1 = create_trend_svg()
 add_data(svg1,data1,x,y,xAxis,yAxis,valueLine)
-var data2 = [
-    {time: 1, inf: 7},
-    {time: 4, inf: 1},
-    {time: 6, inf: 8},
-    {time: 10, inf:15}
- ];
+
 
 /*
 // set the dimensions and margins of the graph
