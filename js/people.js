@@ -1,5 +1,3 @@
-
-
 class Box
 {
     constructor(name,pos,size)
@@ -22,7 +20,8 @@ class Box
         this.p_state = []
         this.p_dest_x= tf.zeros([2]);
         this.p_dest_y = tf.zeros([0]);
-        this.p_inf_time = []
+        this.p_inf_time = [];
+        this.p_rec_time = [];
         this.trend = [0,0,0];
         this.time = []
         this.time_d = {}
@@ -52,6 +51,7 @@ class Box
                 this.p_inf_time.push(-1)
                 this.trend[0]+=1;
             }
+            this.p_rec_time.push(-1)
         }
         this.num+=num;
     }
@@ -107,6 +107,7 @@ class Box
                     {
                         this.trend[2]+=1;
                         this.trend[1]-=1;
+                        this.p_rec_time[id]=this.now
                     }
 
 
@@ -172,39 +173,8 @@ class Box
     {
         return tf.tidy(()=>tf.all((tf.abs(this.p_dest_x.sub(this.p_x)).less(diff)) && (tf.abs(this.p_dest_y.sub(this.p_y)).less(diff))).dataSync()[0]);
     }
-
-    /*count_state(arr)
-    {
-        const counts = {};
-        for (var i = 0; i < arr.length; i++) 
-        {
-           counts[arr[i]] = 1 + (counts[arr[i]] || 0);
-           if (arr[i]==1)
-           {
-                this.inf_c = 1 + (counts[arr[i]] || 0);
-                this.inf_l.push(this.inf_c);
-                this.time_d.y = this.inf_l;
-           }
-           else if (arr[i]==0)
-           {
-                this.sus_c = 1 + (counts[arr[i]] || 0);
-           }
-           else
-           {
-                this.rec_c = 1 + (counts[arr[i]] || 0);
-           }
-        }
-        
-        this.time.push(this.now.toFixed(2));
-        this.time_d.x = this.time;
-       // this.trend.y = this.inf_l;
-        //this.trend.x = this.time;
-        this.trend.push(this.time_d)
-        return counts;
-    }*/
-
     count_state(x)
     {
         return this.trend[x];
     }
-}
+}    
