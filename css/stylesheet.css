@@ -139,3 +139,21 @@
 .disabled {
     pointer-events: none; /* Disable an element interaction, so it will not respond any event */
 }
+.line1 {
+	fill: none;
+	stroke: red;
+	stroke-width: 2px;
+  }
+
+.line2 {
+	fill: none;
+	stroke:green;
+	stroke-width: 2px;
+  }
+
+.line3 {
+	fill: none;
+	stroke:blue;
+	stroke-width: 2px;
+  }
+  

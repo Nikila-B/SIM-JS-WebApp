@@ -1,4 +1,6 @@
 var margin,width,height;
+
+  
 function create_axis()
 {
     margin = {top: 30, right: 20, bottom: 30, left: 50},
@@ -26,7 +28,28 @@ function get_yaxis(y)
     return d3.axisLeft(y)
 }
     //.orient("left").ticks(5);
-function get_line(x,y)
+function get_line_inf(x,y)
+{
+    return d3.line(x,y)
+    .x(function(d) { return x(d.time); })
+    .y(function(d) { return y(d.inf); });
+}
+
+function get_line_sus(x,y)
+{
+    return d3.line(x,y)
+    .x(function(d) { return x(d.time); })
+    .y(function(d) { return y(d.inf); });
+}
+
+function get_line_rec(x,y)
+{
+    return d3.line(x,y)
+    .x(function(d) { return x(d.time); })
+    .y(function(d) { return y(d.inf); });
+}
+
+function get_line_rec(x,y)
 {
     return d3.line(x,y)
     .x(function(d) { return x(d.time); })
@@ -44,7 +67,7 @@ function create_trend_svg()
 }
 
 // Get the data
-function add_data(svg,data,x,y,xAxis,yAxis,valueline,num)
+function add_data(svg,data,x,y,xAxis,yAxis,valueline1,valueline2,valueline3,num)
 {
 
     // Scale the range of the data
@@ -57,23 +80,53 @@ function add_data(svg,data,x,y,xAxis,yAxis,valueline,num)
 
     svg.append("path")
         .data([data])         // Add the valueline path.    
-        .attr("class", "line")  
-        .attr("d", valueline)
+        .attr("class", "line1")  
+        .attr("d", valueline1)
         .attr('fill','none')
-        .attr('stroke','black')
+        .attr('stroke','red')
+
+    svg.append("path")
+        .data([data])         // Add the valueline path.    
+        .attr("class", "line2")  
+        .attr("d", valueline2)
+        .attr('fill','none')
+        .attr('stroke','green')
+
+    svg.append("path")
+        .data([data])         // Add the valueline path.    
+        .attr("class", "line3")  
+        .attr("d", valueline3)
+        .attr('fill','none')
+        .attr('stroke','blue')
+
 
     svg.append("g")                     // Add the X Axis
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
+    svg.append("text")             
+        .attr("transform",
+              "translate(" + (width/2) + " ," + 
+                             (height + margin.bottom) + ")")
+        .style("text-anchor", "middle")
+        .text("Time");
+
     svg.append("g")                     // Add the Y Axis
         .attr("class", "y axis")
         .call(yAxis);
 
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Count"); 
+
 }
 
-function updateData(svg,data,x,y,xAxis,yAxis,valueline,now) {
+function updateData(svg,data1,data2,data3,x,y,xAxis,yAxis,valueline1,valueline2,now) {
     // Scale the range of the data again
     if(now>=x_lim-5)
     {   
@@ -86,9 +139,15 @@ function updateData(svg,data,x,y,xAxis,yAxis,valueline,now) {
     var svg = d3.select("body").transition();
 
     // Make the changes
-    svg.select(".line")   // change the line
+    svg.select(".line1")   // change the line
         .duration(50)
-        .attr("d", valueline(data));
+        .attr("d", valueline1(data1));
+    svg.select(".line2")   // change the line
+        .duration(50)
+        .attr("d", valueline2(data2));
+    svg.select(".line3")   // change the line
+        .duration(50)
+        .attr("d", valueline2(data3));
     svg.select(".x.axis") // change the x axis
         .duration(50)
         .call(xAxis);
